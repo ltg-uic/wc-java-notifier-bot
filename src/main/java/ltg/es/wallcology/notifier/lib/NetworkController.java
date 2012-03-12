@@ -4,12 +4,17 @@
 package ltg.es.wallcology.notifier.lib;
 
 
+import ltg.es.wallcology.notifier.JSONPacketProcessor;
+import ltg.es.wallcology.notifier.IPacketProcessor;
+import ltg.es.wallcology.notifier.XMLPacketProcessor;
+
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.slf4j.Logger;
@@ -32,8 +37,10 @@ public class NetworkController {
 	// Credentials
 	private String myId = null;
 	private String password = null;
-	// Packet collector
+	// Packet collectors and processors
 	private PacketCollector pc = null;
+	private IPacketProcessor json_pp = null;
+	private IPacketProcessor xml_pp = null;
 	
 	
 
@@ -108,9 +115,14 @@ public class NetworkController {
 	 * Start to wait for commands. As a command comes it is parsed and then executed
 	 */
 	public synchronized void listen() {
-		pc = connection.createPacketCollector(null);
-		while(!Thread.currentThread().isInterrupted())
-				pc.nextResult().toXML();
+		log.info("Listening for JSON and XML messages...");
+		pc = connection.createPacketCollector(new PacketTypeFilter(Message.class));
+		json_pp = new JSONPacketProcessor();
+		xml_pp = new XMLPacketProcessor();
+		while(!Thread.currentThread().isInterrupted()) {
+				json_pp.processPacket((Message) pc.nextResult());
+				xml_pp.processPacket((Message) pc.nextResult());
+		}
 		this.disconnect();
 	}
 
