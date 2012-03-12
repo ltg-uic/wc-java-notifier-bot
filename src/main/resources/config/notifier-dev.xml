@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<server>
+	<comment>
+	 This configuration file uses the same syntax 
+	 of the java properties XML file.
+	</comment>
+	
+	<entry key="XMPP_SERVER_PORT">5222</entry>
+	<entry key="DEFAULT_RESOURCE_ID">wallcology-notifier-agent</entry>
+	<entry key="XMPP_SERVER_URL">phenomena.evl.uic.edu</entry>
+	<entry key="XMPP_SERVER_DOMAIN">phenomena.evl.uic.edu</entry>
+	<entry key="XMPP_USERNAME">wallcology-notifier-agent</entry>
+	<entry key="XMPP_PASSWORD">wallcology-notifier-agent</entry>
+	<entry key="XMPP_ROOM_NAME">wallcology-lincoln-sp12@conference.phenomena.evl.uic.edu</entry>
+
+    <comment>Note how the following paths DON'T include a separator at the end</comment>
+	<entry key="DB_LOCATION">src/main/db</entry>
+</server>
