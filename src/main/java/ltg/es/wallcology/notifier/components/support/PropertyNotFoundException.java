@@ -1,7 +1,7 @@
 /*
  * Created Nov 23, 2010
  */
-package ltg.es.wallcology.notifier.lib;
+package ltg.es.wallcology.notifier.components.support;
 
 /**
  * TODO Description

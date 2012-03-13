@@ -1,4 +1,4 @@
-package ltg.es.wallcology.notifier;
+package ltg.es.wallcology.notifier.components.support;
 
 import org.jivesoftware.smack.packet.Message;
 

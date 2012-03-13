@@ -1,7 +1,7 @@
 /*
  * Created Mar 12, 2012
  */
-package ltg.es.wallcology.notifier;
+package ltg.es.wallcology.notifier.components.support;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;

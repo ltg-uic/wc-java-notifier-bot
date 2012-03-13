@@ -1,13 +1,15 @@
 /*
  * Created Nov 23, 2010
  */
-package ltg.es.wallcology.notifier.lib;
+package ltg.es.wallcology.notifier.components;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import ltg.es.wallcology.notifier.components.support.PropertyNotFoundException;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
