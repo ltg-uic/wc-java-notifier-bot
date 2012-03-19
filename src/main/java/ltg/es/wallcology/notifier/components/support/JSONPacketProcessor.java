@@ -41,7 +41,7 @@ public class JSONPacketProcessor implements IPacketProcessor {
 			json = jsone.asObject();
 			// Handle other eventual JSON messages that don't follow the SAIL syntax
 			// CODE HERE...
-			// Pick the right JSON processor based on the event type
+			// Pick the right JSON handler based on the event type
 			if (json.getString("eventType")!= null && 
 					json.getString("eventType").equals("new_observation")) {
 				if(json.getString("payload", "type")!= null &&

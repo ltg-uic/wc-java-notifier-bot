@@ -17,6 +17,7 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,6 +100,10 @@ public class NetworkController {
 			connection = null;
 			return false;
 		}
+		//Send presence
+		Presence presence = new Presence(Presence.Type.available);
+		connection.sendPacket(presence);
+		// Get roster
 		roster = connection.getRoster();
 		return true;
 	}
