@@ -9,7 +9,6 @@ import ltg.es.wallcology.notifier.requests.CountRequestData;
 import org.dom4j.Element;
 
 import com.github.jsonj.JsonArray;
-import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
 import com.github.jsonj.tools.JsonBuilder;
 import com.github.jsonj.tools.JsonSerializer;
@@ -45,20 +44,19 @@ public class GetCountHandler extends XMLHandler {
 		
 		// Compare values...
 		boolean doNotSendNotification = true;
-		boolean tmpResult;
 		alerts = JsonBuilder.array();
 		
 		// ... for environment
-		if (tmpResult = !compare(Double.parseDouble(xml.elementTextTrim("temperature")), 2.0, cd.getTemp())) {
-			generateAlert("Kids entered the wrong temperature value. \\nEntered value = " + cd.getTemp() + ". \\nReal value = " + xml.elementTextTrim("temperature") + ".");
+		if (!compare(Double.parseDouble(xml.elementTextTrim("temperature")), 2.0, cd.getTemp())) {
+			generateAlert("Kids entered the wrong temperature value <br />Entered value = " + cd.getTemp() + " <br />Real value = " + xml.elementTextTrim("temperature"));
 			doNotSendNotification = false;
 		}
-		if (tmpResult = !compare(Double.parseDouble(xml.elementTextTrim("humidity")), 3.0, cd.getHumid())) {
-			generateAlert("Kids entered the wrong humidity value. \\nEntered value = " + cd.getHumid() + ". \\nReal value = " + xml.elementTextTrim("humidity") + ".");
+		if (!compare(Double.parseDouble(xml.elementTextTrim("humidity")), 3.0, cd.getHumid())) {
+			generateAlert("Kids entered the wrong humidity value <br />Entered value = " + cd.getHumid() + " <br />Real value = " + xml.elementTextTrim("humidity"));
 			doNotSendNotification = false;
 		}
-		if (tmpResult = !compare(Double.parseDouble(xml.elementTextTrim("light")), 3.0, cd.getLight())) {
-			generateAlert("Kids entered the wrong light value. \\nEntered value = " + cd.getLight() + ". \\nReal value = " + xml.elementTextTrim("light") + ".");
+		if (!compare(Double.parseDouble(xml.elementTextTrim("light")), 3.0, cd.getLight())) {
+			generateAlert("Kids entered the wrong light value <br />Entered value = " + cd.getLight() + " <br />Real value = " + xml.elementTextTrim("light"));
 			doNotSendNotification = false;
 		}
 		// ... for creatures
@@ -70,11 +68,12 @@ public class GetCountHandler extends XMLHandler {
 		if (!doNotSendNotification) {
 			// Generate alert
 			JsonObject notification = JsonBuilder.object()
+					.put("id", cd.getId())
 					.put("title", "Group " + cd.getWall() + " needs help")
 					.put("alerts", alerts)
 					.get();
-			log.debug(JsonSerializer.serialize(notification, true));
-			//net.sendTo(ConfFile.getProperty("FRONTEND_USERNAME"), JsonSerializer.serialize(notification));
+			//log.debug(JsonSerializer.serialize(notification));
+			net.sendTo(ConfFile.getProperty("FRONTEND_USERNAME"), JsonSerializer.serialize(notification));
 		}
 	}
 	
