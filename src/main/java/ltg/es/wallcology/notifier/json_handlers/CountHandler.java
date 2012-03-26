@@ -4,8 +4,6 @@
 package ltg.es.wallcology.notifier.json_handlers;
 
 import ltg.es.wallcology.notifier.components.ConfFile;
-import ltg.es.wallcology.notifier.components.NetworkController;
-import ltg.es.wallcology.notifier.components.RequestsMap;
 import ltg.es.wallcology.notifier.requests.CountRequestData;
 
 import com.github.jsonj.JsonObject;
@@ -16,9 +14,6 @@ import com.github.jsonj.JsonObject;
  * @author Gugo
  */
 public class CountHandler extends JsonHandler {
-	
-	NetworkController net = NetworkController.getInstance();
-	RequestsMap rm = RequestsMap.getInstance();
 
 	public CountHandler(JsonObject json) {
 		super(json);
@@ -31,7 +26,7 @@ public class CountHandler extends JsonHandler {
 	@Override
 	public void handle() {
 		// Store data in the map
-		rm.addRequest(new CountRequestData(
+		String reqId = rm.addRequest(new CountRequestData(
 				Integer.parseInt(json.getString("payload", "chosen_habitat")),   							//wall
 				Integer.parseInt(json.getString("payload", "light_level")),									//light
 				Integer.parseInt(json.getString("payload", "temperature")),									//temp
@@ -57,7 +52,7 @@ public class CountHandler extends JsonHandler {
 				Integer.parseInt(json.getString("payload", "organism_counts", "predator", "final_count"))	//pr_f
 				));
 		// Send request to WallCology server
-		String message = "<getCount wall=\""+ json.getString("payload", "chosen_habitat") +"\" />";
+		String message = "<getCount reqId=\""+ reqId +"\" wall=\""+ json.getString("payload", "chosen_habitat") +"\" />";
 		net.sendTo(ConfFile.getProperty("WALLCOLOGY_USERNAME"), message);
 	}
 

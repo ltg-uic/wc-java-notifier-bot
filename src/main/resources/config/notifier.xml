@@ -14,6 +14,7 @@
 	<entry key="DEFAULT_RESOURCE_ID">wallcology-notifier-agent</entry>
 	<entry key="XMPP_ROOM_NAME">yourChatRoomNameIncludingDomain</entry>
 	<entry key="WALLCOLOGY_USERNAME">yourWallCologyUsernameIncludingDomain</entry>
+	<entry key="FRONTEND_USERNAME">yourFrontendUsernameIncludingDomain</entry>
 
     <comment>Note how the following paths DON'T include a separator at the end</comment>
 	<entry key="DB_LOCATION">../db</entry>

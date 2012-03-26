@@ -14,6 +14,7 @@
 	<entry key="DEFAULT_RESOURCE_ID">wallcology-notifier-agent</entry>
 	<entry key="XMPP_ROOM_NAME">wallcology-lincoln-sp12@conference.phenomena.evl.uic.edu</entry>
 	<entry key="WALLCOLOGY_USERNAME">wc1@phenomena.evl.uic.edu</entry>
+	<entry key="FRONTEND_USERNAME">wallcology-notifier-interface@phenomena.evl.uic.edu</entry>
 
     <comment>Note how the following paths DON'T include a separator at the end</comment>
 	<entry key="DB_LOCATION">src/main/db</entry>

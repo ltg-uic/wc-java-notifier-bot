@@ -47,8 +47,9 @@ public class RequestsMap {
 	
 	
 	
-	public void addRequest(RequestData req) {
+	public String addRequest(RequestData req) {
 		map.put(req.getId(), req);
+		return req.getId();
 	}
 	
 	
