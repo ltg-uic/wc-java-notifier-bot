@@ -2,7 +2,7 @@
 
 <configuration>
 
-	<property name="LOG_DIR" value="../logs" />
+	<property name="LOG_DIR" value="../log" />
 
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
 		<file>${LOG_DIR}/ps.log</file>
