@@ -1,0 +1,11 @@
+/* Keep the bar at the bottom of the page */
+/*[data-role=page]{height: 100% !important; position:relative !important;}
+[data-role=footer]{bottom:0; position:absolute !important; top: auto !important; width:100%;} */
+
+.alert {
+	border-radius: 10px;
+	background: white;
+	border: 1px solid #BBB;
+	margin: 5px;
+	padding: 5px;
+}
