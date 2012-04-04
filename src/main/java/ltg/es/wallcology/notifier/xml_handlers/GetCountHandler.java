@@ -59,7 +59,7 @@ public class GetCountHandler extends XMLHandler {
 			generateAlert("Kids entered the wrong light value <br />Entered value = " + cd.getLight() + " <br />Real value = " + xml.elementTextTrim("light"));
 			doNotSendNotification = false;
 		}
-		// ... for creatures
+		// ... for creatures with one count only
 		
 		// ... and the math
 		
@@ -69,7 +69,7 @@ public class GetCountHandler extends XMLHandler {
 			// Generate alert
 			JsonObject notification = JsonBuilder.object()
 					.put("id", cd.getId())
-					.put("title", "Group " + cd.getWall() + " needs help")
+					.put("title", cd.getOrigin() + " need help!")
 					.put("alerts", alerts)
 					.get();
 			//log.debug(JsonSerializer.serialize(notification));

@@ -25,8 +25,18 @@ public class CountHandler extends JsonHandler {
 	 */
 	@Override
 	public void handle() {
+		// Process data to check if this is a predator count or not
+		String pr1 = 	json.getString("payload", "organism_counts", "predator", "count1");
+		if (pr1.equals("")) pr1="0";
+		String pr2 = 	json.getString("payload", "organism_counts", "predator", "count2");
+		if (pr2.equals("")) pr2="0";
+		String pr_avg = json.getString("payload", "organism_counts", "predator", "average");
+		if (pr_avg.equals("")) pr_avg="0";
+		String p_f = 	json.getString("payload", "organism_counts", "predator", "final_count");
+		if (p_f.equals("")) p_f="0";
 		// Store data in the map
 		String reqId = rm.addRequest(new CountRequestData(
+				json.getString("origin"),
 				Integer.parseInt(json.getString("payload", "chosen_habitat")),   							//wall
 				Integer.parseInt(json.getString("payload", "light_level")),									//light
 				Integer.parseInt(json.getString("payload", "temperature")),									//temp
@@ -35,21 +45,18 @@ public class CountHandler extends JsonHandler {
 				Integer.parseInt(json.getString("payload", "organism_counts", "mold", "count1" )),			//f1
 				Integer.parseInt(json.getString("payload", "organism_counts", "blue_bug", "count1")),		//bb1
 				Integer.parseInt(json.getString("payload", "organism_counts", "green_bug", "count1")),		//gb1
-				Integer.parseInt(json.getString("payload", "organism_counts", "predator", "count1")),		//pr1
+				Integer.parseInt(pr1),																		//pr1
 				Integer.parseInt(json.getString("payload", "organism_counts", "blue_bug", "count2")),		//bb2
 				Integer.parseInt(json.getString("payload", "organism_counts", "green_bug", "count2")),		//gb2
-				Integer.parseInt(json.getString("payload", "organism_counts", "predator", "count2")),		//pr2
-				Integer.parseInt(json.getString("payload", "organism_counts", "blue_bug", "count3")),		//bb3
-				Integer.parseInt(json.getString("payload", "organism_counts", "green_bug", "count3")),		//gb3
-				Integer.parseInt(json.getString("payload", "organism_counts", "predator", "count3")),		//pr3
+				Integer.parseInt(pr2),																		//pr2
 				Integer.parseInt(json.getString("payload", "organism_counts", "blue_bug", "average")),		//bb_avg
 				Integer.parseInt(json.getString("payload", "organism_counts", "green_bug", "average")),		//gb_avg
-				Integer.parseInt(json.getString("payload", "organism_counts", "predator", "average")),		//pred_avg
+				Integer.parseInt(pr_avg),																	//pred_avg
 				Integer.parseInt(json.getString("payload", "organism_counts", "scum", "final_count")),		//s_f
 				Integer.parseInt(json.getString("payload", "organism_counts", "mold", "final_count")),		//f_f
 				Integer.parseInt(json.getString("payload", "organism_counts", "blue_bug", "final_count")),	//bb_f
 				Integer.parseInt(json.getString("payload", "organism_counts", "green_bug", "final_count")),	//gb_f
-				Integer.parseInt(json.getString("payload", "organism_counts", "predator", "final_count"))	//pr_f
+				Integer.parseInt(p_f)																		//pr_f
 				));
 		// Send request to WallCology server
 		String message = "<getCount reqId=\""+ reqId +"\" wall=\""+ json.getString("payload", "chosen_habitat") +"\" />";

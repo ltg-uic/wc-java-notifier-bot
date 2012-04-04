@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<stringAttribute key="bad_container_name" value="/wallcology-notifier/Notifier"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/wallcology-notifier-agent/src/main/java/ltg/es/wallcology/notifier/Notifier.java"/>
+<listEntry value="/wallcology-notifier/src/main/java/ltg/es/wallcology/notifier/Notifier.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="ltg.es.wallcology.notifier.Notifier"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="src/main/resources/config/notifier-dev.xml"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="wallcology-notifier-agent"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="src/main/config/notifier-dev.xml"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="wallcology-notifier"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dlogback.configurationFile=src/main/resources/config/logger-dev.xml"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dlogback.configurationFile=src/main/config/logger-dev.xml"/>
 </launchConfiguration>

@@ -11,6 +11,7 @@ package ltg.es.wallcology.notifier.requests;
 public class CountRequestData extends RequestData {
 	
 	// Count data
+	private String origin;
 	private int wall;
 	private int light;
 	private int temp;
@@ -23,9 +24,6 @@ public class CountRequestData extends RequestData {
 	private int bb2;
 	private int gb2;
 	private int pr2;
-	private int bb3;
-	private int gb3;
-	private int pr3;
 	private int bb_avg;
 	private int gb_avg;
 	private int pr_avg;
@@ -36,11 +34,12 @@ public class CountRequestData extends RequestData {
 	private int pr_f;
 	
 	
-	public CountRequestData(int wall, int light, int temp, int humid, int s,
+	public CountRequestData(String orig, int wall, int light, int temp, int humid, int s,
 			int f, int bb1, int gb1, int pr1, int bb2, int gb2, int pr2, 
-			int bb3, int gb3, int pr3, int bb_avg, int gb_avg, int pr_avg,
+			int bb_avg, int gb_avg, int pr_avg,
 			int s_f, int f_f, int bb_f, int gb_f, int pr_f) {
 		super();
+		this.origin = orig;
 		this.wall = wall;
 		this.light = light;
 		this.temp = temp;
@@ -53,9 +52,6 @@ public class CountRequestData extends RequestData {
 		this.bb2 = bb1;
 		this.gb2 = gb1;
 		this.pr2 = pr1;
-		this.bb3 = bb3;
-		this.gb3 = gb3;
-		this.pr3 = pr3;
 		this.bb_avg = bb_avg;
 		this.gb_avg = gb_avg;
 		this.pr_avg = pr_avg;
@@ -67,6 +63,11 @@ public class CountRequestData extends RequestData {
 	}
 
 
+	public String getOrigin() {
+		return origin;
+	}
+	
+	
 	public int getWall() {
 		return wall;
 	}
@@ -124,21 +125,6 @@ public class CountRequestData extends RequestData {
 
 	public int getPr2() {
 		return pr2;
-	}
-
-
-	public int getBb3() {
-		return bb3;
-	}
-
-
-	public int getGb3() {
-		return gb3;
-	}
-
-
-	public int getPr3() {
-		return pr3;
 	}
 
 
