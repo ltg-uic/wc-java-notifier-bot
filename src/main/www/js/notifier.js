@@ -47,9 +47,25 @@ function onConnect(status)
         $('#connect').get(0).value = 'connect';
     } else if (status == Strophe.Status.CONNECTED) {
         log('Strophe is connected.');
-        connection.addHandler(onMessage, null, 'message', null, null,  null); 
+        addDefaultXmppHandlers();
         connection.send($pres().tree());
     }
+}
+
+function addDefaultXmppHandlers() {
+        // Add message handler
+        connection.addHandler(onMessage, null, 'message', null, null,  null); 
+        // Set up a pinger to keep the connection alive
+        connection.ping.addPingHandler(function(ping) {
+            console.log("GOT PING! sending pong...")
+            connection.ping.pong(ping)
+        })
+        pingInterval = 14 * 1000 // default is 14 seconds
+        connection.addTimedHandler(pingInterval, function() {
+            console.log("SENDING PING!")
+            connection.ping.ping(Strophe.getDomainFromJid(USERNAME))
+            return true
+        })
 }
 
 function onMessage(msg) {
