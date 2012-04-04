@@ -4,13 +4,6 @@
 
 	<property name="LOG_DIR" value="src/main/logs" />
 
-	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<file>${LOG_DIR}/ps.log</file>
-		<encoder>
-			<pattern>[%d{dd/MM/yyyy-HH:mm:ss}] %-5level [%thread-%logger] %msg%n</pattern>
-		</encoder>
-	</appender>
-
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern>[%d{dd/MM/yyyy-HH:mm:ss}] %-5level [%thread-%logger] %msg%n</pattern>
@@ -18,7 +11,6 @@
 	</appender>
 
 	<root level="debug">
-		<appender-ref ref="STDOUT" />  
-		<!--  <appender-ref ref="FILE" /> -->
+		<appender-ref ref="STDOUT" /> 
 	</root>
 </configuration>
