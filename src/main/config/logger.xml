@@ -5,7 +5,7 @@
 	<property name="LOG_DIR" value="../log" />
 
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<file>${LOG_DIR}/ps.log</file>
+		<file>${LOG_DIR}/wallcology-notifier.log</file>
 		<encoder>
 			<pattern>[%d{dd/MM/yyyy-HH:mm:ss}] %-5level [%thread-%logger] %msg%n</pattern>
 		</encoder>
