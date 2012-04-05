@@ -57,12 +57,12 @@ function addDefaultXmppHandlers() {
         connection.addHandler(onMessage, null, 'message', null, null,  null); 
         // Set up a pinger to keep the connection alive
         connection.ping.addPingHandler(function(ping) {
-            console.log("GOT PING! sending pong...")
+            log("GOT PING! sending pong...")
             connection.ping.pong(ping)
         })
         pingInterval = 14 * 1000 // default is 14 seconds
         connection.addTimedHandler(pingInterval, function() {
-            console.log("SENDING PING!")
+            log("SENDING PING!")
             connection.ping.ping(Strophe.getDomainFromJid(USERNAME))
             return true
         })
@@ -99,6 +99,25 @@ $(document).ready(function () {
     $('#debug_disconnect').click(function(event){
      connection.disconnect();
      event.preventDefault();
-   });
+    });
+
+    // Registed handle to fetch data via mongoose
+    $('#partic_btn').click(function(event){
+        $.ajax({
+            type: "GET",
+            url: "/mongoose/wallcology/observations/_find",
+            data: { criteria: JSON.stringify({"type" : "habitat"})},
+            context: this,
+            success: function(data) {
+                if (data.ok === 1) {
+                    $.each(data.results, function(index, itemData) {
+                        $('#part_content').append(JSON.stringify(itemData));
+                    });
+                } else {
+                    log("Error fetching data")
+                }
+            }
+        });
+    });
 });
 
