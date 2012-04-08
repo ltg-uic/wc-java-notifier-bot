@@ -6,8 +6,6 @@
 
 var BOSH_URL = "http://phenomena.evl.uic.edu:5280/"
 var MONGOOSE_URL = "http://phenomena.evl.uic.edu:27080/"
-var SRV_ADDRESS = '127.0.0.1';
-// var SRV_ADDRESS = '192.168.1.2';
 var SRV_PORT = 1337;
 
 var http = require('http');
@@ -72,8 +70,8 @@ http.createServer(function (req, res) {
             break
         }
     }
-}).listen(SRV_PORT, SRV_ADDRESS);
+}).listen(SRV_PORT);
 
-console.log("Server listening on http://"+ SRV_ADDRESS + ":" +SRV_PORT+"...");
+console.log("Server listening on port:" +SRV_PORT+"...");
 
 
