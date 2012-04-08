@@ -16,6 +16,55 @@
     <script src="js/notifier.js" type="text/javascript"></script>
 </head>
 <body>
+
+
+
+    <!-- !!!!!!!!!!!!!!!!! PARTICIPATION !!!!!!!!!!!!!!!!! -->
+
+    <div id="participation" data-role="page" >
+        <div data-role="header">
+            <h1>Participation</h1>
+        </div><!-- /header -->
+        <div id="part_content" data-role="content">
+            <p>Please select which area you want to get feedback about.</p> 
+        <ul data-role="listview" data-inset="true"> 
+            <li><a href="#habitat_fb">Habitat</a></li> 
+            <!-- Add more pages here -->
+        </ul> 
+        </div>
+        <div data-role="footer" data-id="foo1" data-position="fixed">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#participation" class="ui-btn-active ui-state-persist">Participation</a></li>
+                    <li><a href="#notifications">Alerts</a></li>
+                    <li><a href="#settings">Settings</a></li>
+                </ul>
+            </div><!-- /navbar -->
+        </div><!-- /footer -->
+    </div><!-- /page -->
+
+    <div id="habitat_fb" data-role="page" >
+        <div data-role="header">
+            <h1>Participation - Habitats</h1>
+            <a href="#" data-rel="back" data-theme="a">Back</a>
+        </div><!-- /header -->
+        <div id="part_content" data-role="content"> 
+        </div>
+        <div data-role="footer" data-id="foo1" data-position="fixed">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#participation" class="ui-btn-active ui-state-persist" >Participation</a></li>
+                    <li><a href="#notifications" >Alerts</a></li>
+                    <li><a href="#settings">Settings</a></li>
+                </ul>
+            </div><!-- /navbar -->
+        </div><!-- /footer -->
+    </div><!-- /page -->
+
+
+
+    <!-- !!!!!!!!!!!!!!!!! NOTIFICATIONS !!!!!!!!!!!!!!!!! -->
+
     <div id="notifications" data-role="page" >
         <div id="debug_disconnect" data-role="header">
             <h1>Alerts</h1>
@@ -27,8 +76,8 @@
         <div data-role="footer" data-id="foo1" data-position="fixed">
             <div data-role="navbar">
                 <ul>
+                    <li><a href="#participation">Participation</a></li>
                     <li><a href="#notifications" class="ui-btn-active ui-state-persist">Alerts</a></li>
-                    <li><a id="partic_btn" href="#participation">Participation</a></li>
                     <li><a href="#settings">Settings</a></li>
                 </ul>
             </div><!-- /navbar -->
@@ -36,21 +85,8 @@
     </div><!-- /page -->
 
 
-    <div id="participation" data-role="page" >
-        <!-- No header -->
-        <div id="part_content" data-role="content">
-            <h1>Participation</h1>
-        </div>
-        <div data-role="footer" data-id="foo1" data-position="fixed">
-            <div data-role="navbar">
-                <ul>
-                    <li><a href="#notifications">Alerts</a></li>
-                    <li><a id="partic_btn" href="#participation" class="ui-btn-active ui-state-persist">Participation</a></li>
-                    <li><a href="#settings">Settings</a></li>
-                </ul>
-            </div><!-- /navbar -->
-        </div><!-- /footer -->
-    </div><!-- /page -->
+
+    <!-- !!!!!!!!!!!!!!!!! SETTINGS !!!!!!!!!!!!!!!!! -->
 
     <div id="settings" data-role="page" >
         <!-- No header -->
@@ -61,8 +97,8 @@
         <div data-role="footer" data-id="foo1" data-position="fixed">
             <div data-role="navbar">
                 <ul>
+                    <li><a href="#participation">Participation</a></li>
                     <li><a href="#notifications">Alerts</a></li>
-                    <li><a id="partic_btn" href="#participation">Participation</a></li>
                     <li><a href="#settings" class="ui-btn-active ui-state-persist">Settings</a></li>
                 </ul>
             </div><!-- /navbar -->
