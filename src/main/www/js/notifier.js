@@ -1,5 +1,5 @@
 var BOSH_SERVICE = '/http-bind';
-var USERNAME = 'wallcology-notifier-interface@phenomena.evl.uic.edu';
+var USERNAME = 'wallcology-notifier-interface@localhost';
 var PASSWORD = 'wallcology-notifier-interface';
 var RESOURCE = 'strophe';
 
@@ -101,9 +101,16 @@ $(document).ready(function () {
      event.preventDefault();
     });
 
-    // Registed handle to fetch data via mongoose
-    $('#partic_btn').click(function(event){
-        $.ajax({
+    // Click on habitat
+    $("#habitat_fb").live('pageinit', function() {
+        getParticipationData()
+        setInterval(getParticipationData, 5000)
+    });
+});
+
+
+function getParticipationData() {
+    $.ajax({
             type: "GET",
             url: "/mongoose/wallcology/observations/_find",
             data: { criteria: JSON.stringify({"type" : "habitat"})},
@@ -117,7 +124,5 @@ $(document).ready(function () {
                     log("Error fetching data")
                 }
             }
-        });
     });
-});
-
+}

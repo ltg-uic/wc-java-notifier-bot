@@ -4,9 +4,9 @@
 
 */
 
-var BOSH_URL = "http://phenomena.evl.uic.edu:5280/"
-var MONGOOSE_URL = "http://phenomena.evl.uic.edu:27080/"
-var SRV_PORT = 1337;
+var BOSH_URL = "http://localhost:5280/http-bind/"
+var MONGOOSE_URL = "http://localhost:27080/"
+var SRV_PORT = 8002;
 
 var http = require('http');
 var httpProxy = require('http-proxy');
@@ -72,6 +72,6 @@ http.createServer(function (req, res) {
     }
 }).listen(SRV_PORT);
 
-console.log("Server listening on port:" +SRV_PORT+"...");
+console.log("Server listening on port:" +SRV_PORT);
 
 
