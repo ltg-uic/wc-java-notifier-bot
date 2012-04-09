@@ -116,7 +116,11 @@ function getParticipationData() {
             context: this,
             success: function(data) {
                 if (data.ok === 1) {
-                    $('#part_content tr#'+groupId+' td:last').replaceWith("<td>"+data.count+"</td>")
+                    var oldValue = $('#part_content tr#'+groupId+' td:last').html();
+                    $('#part_content tr#'+groupId+' td:last').replaceWith('<td class="td_ct">'+data.count+'</td>')
+                    if (oldValue!=data.count && oldValue!="") {
+                        console.log("Was "+ oldValue + " and is " +data.count)
+                    }
                 } else {
                     log("Error fetching data")
                 }

@@ -9,3 +9,27 @@
 	margin: 5px;
 	padding: 5px;
 }
+
+#part_content {
+	border: 1px solid #BBB;
+	padding: 5px;
+	margin-left:auto;
+	margin-right:auto;
+	background: white;
+}
+
+#part_content tr {
+	font-size: 250%;
+}
+
+.td_ct {
+	text-align: center;
+}
+
+.even {
+	background: #DCDCDC;
+}
+
+.odd {
+
+}
