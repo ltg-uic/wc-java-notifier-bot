@@ -5,10 +5,6 @@ var RESOURCE = 'strophe';
 
 var connection = null;
 
-function log(msg) {
-    $('#log').append('<div></div>').append(document.createTextNode(msg));
-}
-
 
 function appendNotification(msg) {
     // Parse JSON message
@@ -110,19 +106,22 @@ $(document).ready(function () {
 
 
 function getParticipationData() {
-    $.ajax({
+    $('#part_content tr').each(function() {
+        var groupId = $(this).attr("id")
+        if(groupId==undefined) return
+        $.ajax({
             type: "GET",
-            url: "/mongoose/wallcology/observations/_find",
-            data: { criteria: JSON.stringify({"type" : "habitat"})},
+            url: "/mongoose/wallcology/observations/_count",
+            data: { criteria: JSON.stringify({"type" : "habitat", "origin": groupId}) },
             context: this,
             success: function(data) {
                 if (data.ok === 1) {
-                    $.each(data.results, function(index, itemData) {
-                        $('#part_content').append(JSON.stringify(itemData));
-                    });
+                    $('#part_content tr#'+groupId+' td:last').replaceWith("<td>"+data.count+"</td>")
                 } else {
                     log("Error fetching data")
                 }
             }
+        });
     });
+    //console.log("Updated")
 }

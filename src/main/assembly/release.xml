@@ -27,12 +27,6 @@
 			</excludes>
 		</fileSet>
 		
-		
-		<!-- Web interface files in /www -->
-		<fileSet>
-			<directory>${project.basedir}/src/main/www</directory>
-			<outputDirectory>/www</outputDirectory>
-		</fileSet>
 
 		<!-- Java Daemon files that are not .sh in /bin and /log -->
 		<fileSet>
