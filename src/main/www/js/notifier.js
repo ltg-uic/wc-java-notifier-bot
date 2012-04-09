@@ -100,7 +100,7 @@ $(document).ready(function () {
     // Click on habitat
     $("#habitat_fb").live('pageinit', function() {
         getParticipationData()
-        setInterval(getParticipationData, 5000)
+        setInterval(getParticipationData, 3000)
     });
 });
 
@@ -119,7 +119,7 @@ function getParticipationData() {
                     var oldValue = $('#part_content tr#'+groupId+' td:last').html();
                     $('#part_content tr#'+groupId+' td:last').replaceWith('<td class="td_ct">'+data.count+'</td>')
                     if (oldValue!=data.count && oldValue!="") {
-                        console.log("Was "+ oldValue + " and is " +data.count)
+                        $('#part_content tr#'+groupId+' td:last').css("background-color", "#FF6347")
                     }
                 } else {
                     log("Error fetching data")
