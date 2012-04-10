@@ -26,10 +26,10 @@
             <h1>Participation</h1>
         </div><!-- /header -->
         <div data-role="content">
-            <p>Please select which area you want to get feedback about.</p> 
+            <p>Please select which area you want to get feedback about</p> 
         <ul data-role="listview" data-inset="true"> 
             <li><a href="#habitat_fb">Habitat</a></li> 
-            <!-- Add more pages here -->
+            <li><a href="#organism_fb">Organisms</a></li> 
         </ul> 
         </div>
         <div data-role="footer" data-id="foo1" data-position="fixed">
@@ -43,10 +43,14 @@
         </div><!-- /footer -->
     </div><!-- /page -->
 
+
+    <!-- PARTICIPATION - HABITAT !!!!!!!!!!!!!!!!! -->
+
     <div id="habitat_fb" data-role="page" >
         <div data-role="header">
             <h1>Participation - Habitats</h1>
             <a href="#" data-rel="back" data-theme="a">Back</a>
+            <!-- <a id="hab_today" href="#habitat_fb" data-theme="a">Today</a> -->
         </div><!-- /header -->
         <div id="hab_part_fb" data-role="content"> 
             <table id="part_content">
@@ -75,6 +79,45 @@
             </div><!-- /navbar -->
         </div><!-- /footer -->
     </div><!-- /page -->
+
+
+    <!-- PARTICIPATION - ORGANISMS !!!!!!!!!!!!!!!!! -->
+
+    <div id="organism_fb" data-role="page" >
+        <div data-role="header">
+            <h1>Participation - Organisms</h1>
+            <a href="#" data-rel="back" data-theme="a">Back</a>
+            <!-- <a id="org_today" href="#organism_fb" data-theme="a">Today</a> -->
+        </div><!-- /header -->
+        <div id="org_part_fb" data-role="content"> 
+            <table id="org_part_content">
+                <tr class="odd"><th>Group</th><th  class="td_ct"># observations</th></tr>
+                <tr class="even" id="evan-spencer"><td>Evan, Spencer</td>       <td class="td_ct"></td></tr>
+                <tr class="odd" id="nicholas-david"><td>Nicholas, David</td>    <td class="td_ct"></td></tr>
+                <tr class="even" id="jonathan-payton"><td>Jonathan, Payton</td> <td class="td_ct"></td></tr>
+                <tr class="odd" id="ethan-nick_d"><td>Ethan, Nick D.</td>       <td class="td_ct"></td></tr>
+                <tr class="even" id="shemar-malik"><td>Shemar, Malik</td>       <td class="td_ct"></td></tr>
+                <tr class="odd" id="alice-nick"><td>Alice, Nick</td>            <td class="td_ct"></td></tr>
+                <tr class="even" id="samantha-claire"><td>Samantha, Claire</td> <td class="td_ct"></td></tr>
+                <tr class="odd" id="rebecca-jequira"><td>Rebecca, Jequira</td>  <td class="td_ct"></td></tr>
+                <tr class="even" id="annie-sophia"><td>Annie, Sophia</td>       <td class="td_ct"></td></tr>
+                <tr class="odd" id="kamryn-kirstin"><td>Kamryn, Kirstin</td>    <td class="td_ct"></td></tr>
+                <tr class="even" id="sami-arden"><td>Sami, Arden</td>           <td class="td_ct"></td></tr>
+                <tr class="odd" id="dean-james-edward"><td>Dean, James, Edward</td><td class="td_ct"></td></tr>
+            </table>
+        </div>
+        <div data-role="footer" data-id="foo1" data-position="fixed">
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#participation" class="ui-btn-active ui-state-persist" >Participation</a></li>
+                    <li><a href="#notifications" >Alerts</a></li>
+                    <li><a href="#settings">Settings</a></li>
+                </ul>
+            </div><!-- /navbar -->
+        </div><!-- /footer -->
+    </div><!-- /page -->
+
+
 
 
 

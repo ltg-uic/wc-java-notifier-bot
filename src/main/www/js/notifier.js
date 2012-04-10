@@ -5,6 +5,9 @@ var RESOURCE = 'strophe';
 
 var connection = null;
 
+var hab_part_justToday = false
+var org_part_justToday = false
+
 
 function appendNotification(msg) {
     // Parse JSON message
@@ -99,33 +102,137 @@ $(document).ready(function () {
 
     // Click on habitat
     $("#habitat_fb").live('pageinit', function() {
-        getParticipationData()
-        setInterval(getParticipationData, 3000)
+        hab_part_justToday = false
+        getHabitatData()
+        setInterval(getHabitatData, 3000)
     });
+
+    // Click on today's button - habitat
+    $("#hab_today").click(function(event){
+        if ($("#hab_today").text()=="Today") {
+            // Swith to TODAY view (therefore buttn is overall)
+            hab_part_justToday = true
+            $("#hab_today .ui-btn-text").text('Overall')
+        } else {
+            // Swith to OVERALL view (therefore buttn is today)
+            hab_part_justToday = false
+            $("#hab_today .ui-btn-text").text('Today')
+        }
+        getHabitatData()
+    });
+
+    // Click on organisms
+    $("#organism_fb").live('pageinit', function() {
+        org_part_justToday = false
+        getOrganismsData()
+        setInterval(getOrganismsData, 3000)
+    });
+
+    // Click on today's button - organisms
+    $("#org_today").click(function(event){
+        if ($("#org_today").text()=="Today") {
+             // Swith to TODAY view (therefore buttn is overall)
+            org_part_justToday = true
+            $("#org_today .ui-btn-text").text('Overall')
+        } else {
+            // Swith to OVERALL view (therefore buttn is today)
+            org_part_justToday = false
+            $("#org_today .ui-btn-text").text('Today')
+        }
+        getOrganismsData()
+    });
+
 });
 
 
-function getParticipationData() {
+function getHabitatData() {
     $('#part_content tr').each(function() {
         var groupId = $(this).attr("id")
-        if(groupId==undefined) return
-        $.ajax({
-            type: "GET",
-            url: "/mongoose/wallcology/observations/_count",
-            data: { criteria: JSON.stringify({"type" : "habitat", "origin": groupId}) },
-            context: this,
-            success: function(data) {
-                if (data.ok === 1) {
-                    var oldValue = $('#part_content tr#'+groupId+' td:last').html();
-                    $('#part_content tr#'+groupId+' td:last').replaceWith('<td class="td_ct">'+data.count+'</td>')
-                    if (oldValue!=data.count && oldValue!="") {
-                        $('#part_content tr#'+groupId+' td:last').css("background-color", "#FF6347")
+        if(groupId==undefined) return;
+        if(hab_part_justToday==false) {
+            $.ajax({
+                type: "GET",
+                url: "/mongoose/wallcology/observations/_count",
+                data: { criteria: JSON.stringify({"type" : "habitat", "origin": groupId}) },
+                context: this,
+                success: function(data) {
+                    if (data.ok === 1) {
+                        var oldValue = $('#part_content tr#'+groupId+' td:last').html();
+                        $('#part_content tr#'+groupId+' td:last').replaceWith('<td class="td_ct">'+data.count+'</td>')
+                        if (oldValue!=data.count && oldValue!="") {
+                            $('#part_content tr#'+groupId+' td:last').css("background-color", "#FF6347")
+                        }
+                    } else {
+                        console.log("Error fetching data")
                     }
-                } else {
-                    log("Error fetching data")
                 }
-            }
-        });
+            });
+        } else {
+            $.ajax({
+                type: "GET",
+                url: "/mongoose/wallcology/observations/_count",
+                data: { criteria: JSON.stringify('{"type" : "habitat", "timestamp" : {$regex : "/2012-04-10*/"}, "origin" : groupId}') },
+                context: this,
+                success: function(data) {
+                    if (data.ok === 1) {
+                        var oldValue = $('#part_content tr#'+groupId+' td:last').html();
+                        $('#part_content tr#'+groupId+' td:last').replaceWith('<td class="td_ct">'+data.count+'</td>')
+                        if (oldValue!=data.count && oldValue!="") {
+                            $('#part_content tr#'+groupId+' td:last').css("background-color", "#FF6347")
+                        }
+                    } else {
+                        console.log("Error fetching data")
+                    }
+                }
+            });
+        }
     });
-    //console.log("Updated")
+}
+
+
+
+
+
+function getOrganismsData() {
+    $('#org_part_content tr').each(function() {
+        var groupId = $(this).attr("id")
+        if(groupId==undefined) return;
+        if(hab_part_justToday==false) {
+            $.ajax({
+                type: "GET",
+                url: "/mongoose/wallcology/observations/_count",
+                data: { criteria: JSON.stringify({"type" : "organism", "origin": groupId}) },
+                context: this,
+                success: function(data) {
+                    if (data.ok === 1) {
+                        var oldValue = $('#org_part_content tr#'+groupId+' td:last').html();
+                        $('#org_part_content tr#'+groupId+' td:last').replaceWith('<td class="td_ct">'+data.count+'</td>')
+                        if (oldValue!=data.count && oldValue!="") {
+                            $('#org_part_content tr#'+groupId+' td:last').css("background-color", "#FF6347")
+                        }
+                    } else {
+                        console.log("Error fetching data")
+                    }
+                }
+            });
+        } else {
+            $.ajax({
+                type: "GET",
+                url: "/mongoose/wallcology/observations/_count",
+                data: { criteria: JSON.stringify('{"type" : "organism", "timestamp" : {$regex : "/2012-04-10*/"}, "origin" : groupId}') },
+                context: this,
+                success: function(data) {
+                    if (data.ok === 1) {
+                        var oldValue = $('#org_part_content tr#'+groupId+' td:last').html();
+                        $('#org_part_content tr#'+groupId+' td:last').replaceWith('<td class="td_ct">'+data.count+'</td>')
+                        if (oldValue!=data.count && oldValue!="") {
+                            $('#org_part_content tr#'+groupId+' td:last').css("background-color", "#FF6347")
+                        }
+                    } else {
+                        console.log("Error fetching data")
+                    }
+                }
+            });
+        }
+    });
 }
