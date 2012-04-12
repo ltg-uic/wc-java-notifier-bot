@@ -3,19 +3,11 @@
  */
 package ltg.es.wallcology.notifier;
 
-import java.net.UnknownHostException;
+import ltg.es.wallcology.notifier.components.ConfFile;
+import ltg.es.wallcology.notifier.components.NetworkController;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.Mongo;
-import com.mongodb.MongoException;
-
-import ltg.es.wallcology.notifier.components.ConfFile;
-import ltg.es.wallcology.notifier.components.NetworkController;
 
 
 /**
@@ -29,7 +21,6 @@ public class Notifier {
 	protected Logger log = LoggerFactory.getLogger(this.getClass());
 	private ConfFile config = null; 
 	private NetworkController net = null;
-	private DBCollection notifications = null;
 	
 	
 	public static void main(String[] args) {
@@ -46,8 +37,6 @@ public class Notifier {
 		config = new ConfFile(configFile);
 		if(!config.parse())
 			System.exit(1);
-		// Initialize persistency
-		initializeDB();
 		// Connect to the XMPP server
 		net = NetworkController.getInstance();
 		if (!net.connect()) 
@@ -61,22 +50,4 @@ public class Notifier {
 			net.listen();
 		}
 	}	
-	
-	// Inizialize the connection to mongodb
-	private void initializeDB() {
-		Mongo m = null;
-		DB db = null;
-		try {
-			m = new Mongo("carbon.evl.uic.edu");
-			db = m.getDB("wallcology");
-			notifications = db.getCollection("notifications");
-		} catch (UnknownHostException e) {
-			log.error("Unable to resolve DB host");
-			Thread.currentThread().interrupt();
-		} catch (MongoException e) {
-			log.error("Unable to connect to DB");
-			Thread.currentThread().interrupt();
-		}
-	}
-
 }

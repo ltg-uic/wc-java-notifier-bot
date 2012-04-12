@@ -12,7 +12,7 @@
 	<entry key="XMPP_USERNAME">wallcology-notifier-agent</entry>
 	<entry key="XMPP_PASSWORD">wallcology-notifier-agent</entry>
 	<entry key="DEFAULT_RESOURCE_ID">wallcology-notifier-agent</entry>
-	<entry key="XMPP_ROOM_NAME">wallcology-lincoln-sp12@conference.phenomena.evl.uic.edu</entry>
+	<entry key="XMPP_ROOM_NAME">test-room@conference.phenomena.evl.uic.edu</entry>
 	<entry key="WALLCOLOGY_USERNAME">wc1@phenomena.evl.uic.edu</entry>
 	<entry key="FRONTEND_USERNAME">wallcology-notifier-interface@phenomena.evl.uic.edu</entry>
 

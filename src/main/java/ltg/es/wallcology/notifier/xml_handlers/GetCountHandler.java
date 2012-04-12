@@ -3,7 +3,11 @@
  */
 package ltg.es.wallcology.notifier.xml_handlers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ltg.es.wallcology.notifier.components.ConfFile;
+import ltg.es.wallcology.notifier.components.DBController;
 import ltg.es.wallcology.notifier.requests.CountRequestData;
 
 import org.dom4j.Element;
@@ -12,6 +16,7 @@ import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonObject;
 import com.github.jsonj.tools.JsonBuilder;
 import com.github.jsonj.tools.JsonSerializer;
+import com.mongodb.BasicDBObject;
 
 /**
  * TODO Description
@@ -20,9 +25,10 @@ import com.github.jsonj.tools.JsonSerializer;
  */
 public class GetCountHandler extends XMLHandler {
 	
+	private DBController db = null;
+	
 	private CountRequestData cd = null;
-	//private JsonObject alerts = null; 
-	private JsonArray alerts = null;
+	private List<BasicDBObject> alerts = null;
 	
 
 	/**
@@ -30,6 +36,7 @@ public class GetCountHandler extends XMLHandler {
 	 */
 	public GetCountHandler(Element e) {
 		super(e);
+		db = DBController.getInstance();
 	}
 
 	/* (non-Javadoc)
@@ -44,7 +51,7 @@ public class GetCountHandler extends XMLHandler {
 		
 		// Compare values...
 		boolean doNotSendNotification = true;
-		alerts = JsonBuilder.array();
+		alerts = new ArrayList<BasicDBObject>();
 		
 		// ... for environment
 		if (!compare(Double.parseDouble(xml.elementTextTrim("temperature")), 2.0, cd.getTemp())) {
@@ -64,16 +71,15 @@ public class GetCountHandler extends XMLHandler {
 		// ... and the math
 		
 		
-		// And send the notification
+		// ... and finally compose and store the notification in the DB
 		if (!doNotSendNotification) {
-			// Generate alert
-			JsonObject notification = JsonBuilder.object()
-					.put("id", cd.getId())
-					.put("title", cd.getOrigin() + " need help!")
-					.put("alerts", alerts)
-					.get();
-			//log.debug(JsonSerializer.serialize(notification));
-			net.sendTo(ConfFile.getProperty("FRONTEND_USERNAME"), JsonSerializer.serialize(notification));
+			BasicDBObject n = new BasicDBObject();
+			n.put("id", cd.getId());
+			n.put("title", cd.getOrigin() + " need help!");
+			n.put("alerts", alerts);
+			//db.saveNotification(n);
+			log.debug(n.toString());
+			//net.sendTo(ConfFile.getProperty("FRONTEND_USERNAME"), JsonSerializer.serialize(notification));
 		}
 	}
 	
@@ -95,7 +101,8 @@ public class GetCountHandler extends XMLHandler {
 	
 	
 	private void generateAlert(String text) {
-		alerts.add(JsonBuilder.object().put("text", text).get());
+		BasicDBObject alert = new BasicDBObject("text", text);
+		alerts.add(alert);
 	}
 
 }
