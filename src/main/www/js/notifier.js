@@ -171,7 +171,7 @@ function getHabitatData() {
             $.ajax({
                 type: "GET",
                 url: "/mongoose/wallcology/observations/_count",
-                data: { criteria: JSON.stringify('{"type" : "habitat", "timestamp" : {$regex : "/2012-04-10*/"}, "origin" : groupId}') },
+                data: { criteria: JSON.stringify('{"type" : "habitat", "timestamp" : {$regex : "/2012-04-10*/", $options : "x"}, "origin" : groupId}') },
                 context: this,
                 success: function(data) {
                     if (data.ok === 1) {
