@@ -4,18 +4,14 @@
 package ltg.es.wallcology.notifier.xml_handlers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import ltg.es.wallcology.notifier.components.ConfFile;
 import ltg.es.wallcology.notifier.components.DBController;
 import ltg.es.wallcology.notifier.requests.CountRequestData;
 
 import org.dom4j.Element;
 
-import com.github.jsonj.JsonArray;
-import com.github.jsonj.JsonObject;
-import com.github.jsonj.tools.JsonBuilder;
-import com.github.jsonj.tools.JsonSerializer;
 import com.mongodb.BasicDBObject;
 
 /**
@@ -76,10 +72,10 @@ public class GetCountHandler extends XMLHandler {
 			BasicDBObject n = new BasicDBObject();
 			n.put("id", cd.getId());
 			n.put("title", cd.getOrigin() + " need help!");
+			n.put("status", "new");
+			n.put("history", new BasicDBObject("new", System.currentTimeMillis()));
 			n.put("alerts", alerts);
-			//db.saveNotification(n);
-			log.debug(n.toString());
-			//net.sendTo(ConfFile.getProperty("FRONTEND_USERNAME"), JsonSerializer.serialize(notification));
+			db.saveNotification(n);
 		}
 	}
 	
