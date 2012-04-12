@@ -32,12 +32,18 @@ public class CountRequestData extends RequestData {
 	private int bb_f;
 	private int gb_f;
 	private int pr_f;
+	private int s_mult;
+	private int f_mult;
+	private int bb_mult;
+	private int gb_mult;
+	private int pr_mult;
 	
 	
 	public CountRequestData(String orig, int wall, int light, int temp, int humid, int s,
 			int f, int bb1, int gb1, int pr1, int bb2, int gb2, int pr2, 
 			int bb_avg, int gb_avg, int pr_avg,
-			int s_f, int f_f, int bb_f, int gb_f, int pr_f) {
+			int s_f, int f_f, int bb_f, int gb_f, int pr_f,
+			int s_mult, int f_mult, int bb_mult, int gb_mult, int pr_mult) {
 		super();
 		this.origin = orig;
 		this.wall = wall;
@@ -60,6 +66,11 @@ public class CountRequestData extends RequestData {
 		this.bb_f = bb_f;
 		this.gb_f = gb_f;
 		this.pr_f = pr_f;
+		this.s_mult = s_mult;
+		this.f_mult = f_mult;
+		this.bb_mult = bb_mult;
+		this.gb_mult = gb_mult;
+		this.pr_mult = pr_mult;
 	}
 
 
@@ -166,4 +177,30 @@ public class CountRequestData extends RequestData {
 	public int getPr_f() {
 		return pr_f;
 	}
+
+
+	public int getS_mult() {
+		return s_mult;
+	}
+
+
+	public int getF_mult() {
+		return f_mult;
+	}
+
+
+	public int getBb_mult() {
+		return bb_mult;
+	}
+
+
+	public int getGb_mult() {
+		return gb_mult;
+	}
+
+
+	public int getPr_mult() {
+		return pr_mult;
+	}
+	
 }

@@ -56,7 +56,12 @@ public class CountHandler extends JsonHandler {
 				Integer.parseInt(json.getString("payload", "organism_counts", "mold", "final_count")),		//f_f
 				Integer.parseInt(json.getString("payload", "organism_counts", "blue_bug", "final_count")),	//bb_f
 				Integer.parseInt(json.getString("payload", "organism_counts", "green_bug", "final_count")),	//gb_f
-				Integer.parseInt(p_f)																		//pr_f
+				Integer.parseInt(p_f),																		//pr_f
+				Integer.parseInt(json.getString("payload", "organism_counts", "scum", "multiplier")),		//s_mult
+				Integer.parseInt(json.getString("payload", "organism_counts", "mold", "multiplier" )),		//f_mult
+				Integer.parseInt(json.getString("payload", "organism_counts", "blue_bug", "multiplier")),	//bb_mult
+				Integer.parseInt(json.getString("payload", "organism_counts", "green_bug", "multiplier")),	//gb_mult
+				Integer.parseInt(json.getString("payload", "organism_counts", "predator", "multiplier"))	//pr_mult
 				));
 		// Send request to WallCology server
 		String message = "<getCount reqId=\""+ reqId +"\" wall=\""+ json.getString("payload", "chosen_habitat") +"\" />";
