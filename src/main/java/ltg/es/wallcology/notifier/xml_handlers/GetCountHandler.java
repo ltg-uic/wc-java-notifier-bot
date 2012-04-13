@@ -51,7 +51,6 @@ public class GetCountHandler extends XMLHandler {
 		// Compose and store the notification using the generated alerts
 		if (!doNotSendNotification) {
 			BasicDBObject n = new BasicDBObject();
-			n.put("id", cd.getId());
 			n.put("title", cd.getOrigin() + " need help!");
 			n.put("status", "new");
 			n.put("history", new BasicDBObject("new", System.currentTimeMillis()));
