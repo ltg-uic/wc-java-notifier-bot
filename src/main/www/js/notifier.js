@@ -58,11 +58,11 @@ $(document).ready(function () {
 
     $("#notifications").bind('pagebeforeshow', function() {
         getNotifications()
-        notifications_poll = setInterval(getNotifications, 2000)
+        //notifications_poll = setInterval(getNotifications, 2000)
     });
 
     $("#notifications").bind('pagebeforehide', function() {
-        clearInterval(notifications_poll)
+        //clearInterval(notifications_poll)
     });
 
 });
@@ -172,14 +172,17 @@ function getNotifications() {
     $.ajax({
         type: "GET",
         url: "/mongoose/wallcology/notifications/_find",
-        data: {sort : JSON.stringify({"history.new" : -1}), limit: 15},
+        data: { criteria : JSON.stringify({$or : [{"status" : "new"} , {"status" : "viewed"}]}), 
+                sort : JSON.stringify({"history.new" : -1}), 
+                limit: 15},
         context: this,
         success: function(data) {
             if (data.ok === 1) {
-                // Process all notifications
-                $.each(data.results, function(i, n) {
-                    processNotification(n)
-                });
+                // Process notifications
+                if( $('#alert_list li').length == 0)
+                    createList(data.results);
+                else 
+                    updateList(data.results);
             } else {
                 console.log("Error fetching notifications")
             }
@@ -188,40 +191,44 @@ function getNotifications() {
 }
 
 
+function createList(notifications) {
+    $.each(notifications, function(i, notif) {
+        appendNewNotification(notif);
+    });
+}
+
+function updateList(notifications) {
+
+}
 
 
-function processNotification(msg) {
-    // Drop the old notifications...
-    // Check if, in the notification list, there is already a notification with the same id and if so, return
-    // TODO
-    // If not, append the new notification at the top of the list
-    $('#alert_list').append('<li><a href="#alert_' + msg._id.$oid + '" >' + msg.title + '</a></li>');
+function appendNewNotification(msg) {
+    // 1. Append at the end of the list
+    $('#alert_list').append('<li id="' + msg._id.$oid + '"><a href="#alert_' + msg._id.$oid + '" >' + msg.title + '</a></li>');
     $('#alert_list').listview('refresh');
-    // remove alerts details page
-    $("#alert_" + msg._id.$oid).remove();
-    // create alerts detail page
+    // 2. Create alerts detail page
     $('<div id="alert_' + msg._id.$oid + '" data-role="page"><div data-role="header">' + 
         '<h1>Details</h1><a href="#" data-rel="back" data-theme="a">Back</a></div>' + 
         '<div id="alerts_list_' + msg._id.$oid + '" data-role="content"></div></div>').appendTo("body");
-    // add discard button
+    // 2.a add discard button to the details page
     $("<button id='no_deal_" + msg._id.$oid + "' class='no_deal'>I can't deal with this now!</button><br />").appendTo('#alerts_list_' + msg._id.$oid);
-    // append alerts to details page
+    // 2.b append alerts to details page
     $.each(msg.alerts, function (i,a) {
         $('<div class=alert >' + a.text + '</div>').appendTo('#alerts_list_' + msg._id.$oid);
     });
-    // add action button
+    // 2.c add action button
     $("{<br /><button id='deal_" + msg._id.$oid + "' class='deal'>I took action</button>").appendTo('#alerts_list_' + msg._id.$oid);
-    // add events when the users press buttons
-    // $("#alert_' + msg._id.$oid").bind('pagebeforeshow', function() {
-    //     // listener for no_deal
-    //     $("#no_deal_" + msg._id.$oid).click(function(){
-    //         alert("No deal!")
-    //     });
-    //     // listener for deal
-    //     $("#deal_" + msg._id.$oid).click(function(){
-    //         alert("Deal!")
-    //     });
-    // });
+    // 2.d add events when the users press buttons
+    $("#alert_" + msg._id.$oid).bind('pagebeforeshow', function() {
+        // listener for no_deal
+        $("#no_deal_" + msg._id.$oid).click(function(){
+            alert("No deal!")
+        });
+        // listener for deal
+        $("#deal_" + msg._id.$oid).click(function(){
+            alert("Deal!")
+        });
+    });
 
 }
 
