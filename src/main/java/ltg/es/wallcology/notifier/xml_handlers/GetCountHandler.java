@@ -63,13 +63,15 @@ public class GetCountHandler extends XMLHandler {
 
 	// Checks all the values for each count
 	private void checkValues() {
+		// Get tolerance %
+		double tolerance = Double.parseDouble(xml.elementTextTrim("noiseStd"));
 		// Get real values...
 		int real_fuzz = Integer.parseInt(xml.element("fluffyMold").elementTextTrim("amount"));
 		int real_scum = Integer.parseInt(xml.element("greenScum").elementTextTrim("amount"));
 		int real_blue = Integer.parseInt(xml.element("blueBug").elementTextTrim("amount"));
 		int real_green = Integer.parseInt(xml.element("greenBug").elementTextTrim("amount"));
 		int real_p = Integer.parseInt(xml.element("fuzzPredator").elementTextTrim("amount"));
-		
+
 		// Set flags
 		boolean noSCountingErrors = true;
 		boolean noFCountingErrors = true;
@@ -79,80 +81,84 @@ public class GetCountHandler extends XMLHandler {
 		boolean noBBAvgErrors = true;
 		boolean noGBAvgErrors = true;
 		boolean noPRAvgErrors = true;
-		
+
 		// Environmental conditions (3 IFs)
-		if (!compare(Double.parseDouble(xml.elementTextTrim("temperature")), 2.0, cd.getTemp())) {
+		if (!compareEnv(Double.parseDouble(xml.elementTextTrim("temperature")), 2.0, cd.getTemp())) {
 			generateAlert("Kids entered the wrong temperature value <br />Entered value = " + cd.getTemp() + " <br />Real value = " + xml.elementTextTrim("temperature"));
 			doNotSendNotification = false;
 		}
-		if (!compare(Double.parseDouble(xml.elementTextTrim("humidity")), 3.0, cd.getHumid())) {
+		if (!compareEnv(Double.parseDouble(xml.elementTextTrim("humidity")), 3.0, cd.getHumid())) {
 			generateAlert("Kids entered the wrong humidity value <br />Entered value = " + cd.getHumid() + " <br />Real value = " + xml.elementTextTrim("humidity"));
 			doNotSendNotification = false;
 		}
-		if (!compare(Double.parseDouble(xml.elementTextTrim("light")), 3.0, cd.getLight())) {
+		if (!compareEnv(Double.parseDouble(xml.elementTextTrim("light")), 3.0, cd.getLight())) {
 			generateAlert("Kids entered the wrong light value <br />Entered value = " + cd.getLight() + " <br />Real value = " + xml.elementTextTrim("light"));
 			doNotSendNotification = false;
 		}
 
+
 		// Entered values of creatures with only ONE count only (2 IFs)
-		if(!compare(real_fuzz, 5, cd.getF())) {
+		if(!compareValues(real_fuzz, tolerance, cd.getF())) {
 			generateAlert("Kids entered the wrong GREEN VEGETATION value <br />Entered value = " + cd.getF() + " <br />Real value = " + real_fuzz);
 			doNotSendNotification = false;
 			noFCountingErrors = false;
 		}
-		if(!compare(real_scum, 5, cd.getS())) {
+		if(!compareValues(real_scum, tolerance, cd.getS())) {
 			generateAlert("Kids entered the wrong ORANGE VEGETATION value <br />Entered value = " + cd.getS() + " <br />Real value = " + real_scum);
 			doNotSendNotification = false;
 			noSCountingErrors = false;
 		}
 
+
 		// Both entered values for creatures with more than one count (6 IFs)
-		if(!compare(real_blue, 5, cd.getBb1())) {
+		if(!compareValues(real_blue, tolerance, cd.getBb1())) {
 			generateAlert("Kids entered the wrong BLUE BUGS value in their first count. <br />Entered value = " + cd.getBb1() + " <br />Real value = " + real_blue);
 			doNotSendNotification = false;
 			noBBCountingErrors = false;
 		}
-		if(!compare(real_blue, 5, cd.getBb2())) {
+		if(!compareValues(real_blue, tolerance, cd.getBb2())) {
 			generateAlert("Kids entered the wrong BLUE BUGS value in their second count. <br />Entered value = " + cd.getBb2() + " <br />Real value = " + real_blue);
 			doNotSendNotification = false;
 			noBBCountingErrors = false;
 		}
-		if(!compare(real_green, 5, cd.getGb1())) {
+		if(!compareValues(real_green, tolerance, cd.getGb1())) {
 			generateAlert("Kids entered the wrong GREEN BUGS value in their first count. <br />Entered value = " + cd.getGb1() + " <br />Real value = " + real_green);
 			doNotSendNotification = false;
 			noGBCountingErrors = false;
 		}
-		if(!compare(real_green, 5, cd.getGb2())) {
+		if(!compareValues(real_green, tolerance, cd.getGb2())) {
 			generateAlert("Kids entered the wrong GREEN BUGS value in their second count. <br />Entered value = " + cd.getGb2() + " <br />Real value = " + real_green);
 			doNotSendNotification = false;
 			noGBCountingErrors = false;
 		}
 		if (real_p != 0) { 
-			if(!compare(real_p, 5, cd.getPr1())) {
+			if(!compareValues(real_p, tolerance, cd.getPr1())) {
 				generateAlert("Kids entered the wrong PREDATOR value in their first count. <br />Entered value = " + cd.getPr1() + " <br />Real value = " + real_p);
 				doNotSendNotification = false;
 				noPRCountingErrors = false;
 			}
-			if(!compare(real_p, 5, cd.getPr2())) {
+			if(!compareValues(real_p, tolerance, cd.getPr2())) {
 				generateAlert("Kids entered the wrong PREDATOR value in their second count. <br />Entered value = " + cd.getPr2() + " <br />Real value = " + real_p);
 				doNotSendNotification = false;
 				noPRCountingErrors = false;
 			}
 		}
 
-		// The averaging math (3 IFs)
-		if(noBBCountingErrors && !compare(avg(cd.getBb1(),cd.getBb2()), 5, cd.getBb_avg())) {
+
+		// The averaging math (3 IFs) 
+		// Note: tolerance is 0.6 because we want to count as correct approximations to the integer 
+		if(noBBCountingErrors && !compareMath(avg(cd.getBb1(),cd.getBb2()), cd.getBb_avg())) {
 			generateAlert("Kids entered the wrong BLUE BUGS average. <br />Entered value = " + cd.getBb_avg() + " <br />Real value = " + avg(cd.getBb1(),cd.getBb2()));
 			doNotSendNotification = false;
 			noBBAvgErrors = false;
 		}
-		if(noGBCountingErrors && !compare(avg(cd.getGb1(),cd.getGb2()), 5, cd.getGb_avg())) {
+		if(noGBCountingErrors && !compareMath(avg(cd.getGb1(),cd.getGb2()), cd.getGb_avg())) {
 			generateAlert("Kids entered the wrong GREEN BUGS average. <br />Entered value = " + cd.getGb_avg() + " <br />Real value = " + avg(cd.getGb1(),cd.getGb2()));
 			doNotSendNotification = false;
 			noGBAvgErrors = false;
 		}
 		if (real_p != 0) { 
-			if(noPRCountingErrors && !compare(avg(cd.getPr1(),cd.getPr2()), 5, cd.getPr_avg())) {
+			if(noPRCountingErrors && !compareMath(avg(cd.getPr1(),cd.getPr2()), cd.getPr_avg())) {
 				generateAlert("Kids entered the wrong BLUE BUGS average. <br />Entered value = " + cd.getPr_avg() + " <br />Real value = " + avg(cd.getPr1(),cd.getPr2()));
 				doNotSendNotification = false;
 				noPRAvgErrors = false;
@@ -160,24 +166,24 @@ public class GetCountHandler extends XMLHandler {
 		}
 
 		// The final estimate math (5 IFs)
-		if(noFCountingErrors && !compare(realFinal(cd.getF(), cd.getF_mult()), 5, cd.getF_f())) {
+		if(noFCountingErrors && !compareMath(realFinal(cd.getF(), cd.getF_mult()), cd.getF_f())) {
 			generateAlert("Kids entered the wrong FINAL VALUE for the GREEN VEGETATION. <br />Entered value = " + cd.getF_f() + " <br />Real value = " + realFinal(cd.getF(), cd.getF_mult()));
 			doNotSendNotification = false;
 		}
-		if(noSCountingErrors && !compare(realFinal(cd.getS(), cd.getS_mult()), 5, cd.getS_f())) {
+		if(noSCountingErrors && !compareMath(realFinal(cd.getS(), cd.getS_mult()), cd.getS_f())) {
 			generateAlert("Kids entered the wrong FINAL VALUE for the ORANGE VEGETATION. <br />Entered value = " + cd.getS_f() + " <br />Real value = " + realFinal(cd.getS(), cd.getS_mult()));
 			doNotSendNotification = false;
 		}
-		if(noBBCountingErrors && noBBAvgErrors && !compare(realFinal(cd.getBb_avg(), cd.getBb_mult()), 5, cd.getBb_f())) {
+		if(noBBCountingErrors && noBBAvgErrors && !compareMath(realFinal(cd.getBb_avg(), cd.getBb_mult()), cd.getBb_f())) {
 			generateAlert("Kids entered the wrong BLUE BUGS FINAL VALUE. <br />Entered value = " + cd.getBb_mult() + " <br />Real value = " + realFinal(cd.getBb_avg(), cd.getBb_mult()));
 			doNotSendNotification = false;
 		}
-		if(noGBCountingErrors && noGBAvgErrors && !compare(realFinal(cd.getGb_avg(), cd.getGb_mult()), 5, cd.getGb_f())) {
+		if(noGBCountingErrors && noGBAvgErrors && !compareMath(realFinal(cd.getGb_avg(), cd.getGb_mult()), cd.getGb_f())) {
 			generateAlert("Kids entered the wrong GREEN BUGS FINAL VALUE. <br />Entered value = " + cd.getGb_mult() + " <br />Real value = " + realFinal(cd.getGb_avg(), cd.getGb_mult()));
 			doNotSendNotification = false;
 		}
 		if (real_p != 0) { 
-			if(noPRCountingErrors && noPRAvgErrors && !compare(realFinal(cd.getPr_avg(), cd.getPr_mult()), 5, cd.getPr_f())) {
+			if(noPRCountingErrors && noPRAvgErrors && !compareMath(realFinal(cd.getPr_avg(), cd.getPr_mult()), cd.getPr_f())) {
 				generateAlert("Kids entered the wrong PREDATOR FINAL VALUE. <br />Entered value = " + cd.getPr_mult() + " <br />Real value = " + realFinal(cd.getPr_avg(), cd.getPr_mult()));
 				doNotSendNotification = false;
 			}
@@ -185,31 +191,46 @@ public class GetCountHandler extends XMLHandler {
 	}
 
 
+	
 	// Returns true if the kids' value is correct and false if it is not
-	private boolean compare(int sim, int tolerance, int kids) {
+	private boolean compareEnv(double sim, double tolerance, double kids) {
 		if (Math.abs(sim-kids) < tolerance)
 			return true;
 		return false;
 	}
 
-
+	
 	// Returns true if the kids' value is correct and false if it is not
-	private boolean compare(double sim, double tolerance, double kids) {
-		if (Math.abs(sim-kids) < tolerance)
+	// Note: tolerance here is a percent coming from the phenomena server 
+	// and is used to calculate the numeric tolerance as a percent of the 
+	// real value in addition to another 0.05 extra tolerance to account for
+	// kids' errors.
+	private boolean compareValues(int sim, double tolerance, int kids) {
+		int tol = (int)( (tolerance+0.05)*((double)sim) );
+		if (Math.abs(sim-kids) < tol)
 			return true;
 		return false;
 	}
-	
-	
+
+
+	// Returns true if the calculated value is equal to the entered value.
+	// Note: tolerance is 1 to account for .5 approximation
+	private boolean compareMath(double calculated, double entered) {
+		if (Math.abs(calculated-(double)entered) < 1)
+			return true;
+		return false;
+	}
+
+
 	// Average... java doesn't have it :(
-	private int avg(int sim, int kids) {
-		return (sim+kids)/2;
+	private double avg(int v1, int v2) {
+		return ((double) v1+v2)/2;
 	}
-	
-	
+
+
 	// Real final value
-	private int realFinal(int real_value, int multiplier) {
-		return real_value * multiplier;
+	private double realFinal(double real_value, int multiplier) {
+		return real_value * (double) multiplier;
 	}
 
 
