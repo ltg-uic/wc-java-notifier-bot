@@ -194,7 +194,7 @@ public class GetCountHandler extends XMLHandler {
 	
 	// Returns true if the kids' value is correct and false if it is not
 	private boolean compareEnv(double sim, double tolerance, double kids) {
-		if (Math.abs(sim-kids) < tolerance)
+		if (Math.abs(sim-kids) <= tolerance)
 			return true;
 		return false;
 	}
@@ -206,8 +206,9 @@ public class GetCountHandler extends XMLHandler {
 	// real value in addition to another 0.05 extra tolerance to account for
 	// kids' errors.
 	private boolean compareValues(int sim, double tolerance, int kids) {
-		int tol = (int)( (tolerance+0.05)*((double)sim) );
-		if (Math.abs(sim-kids) < tol)
+		int tol = (int)Math.round( (2*tolerance+0.05)*((double)sim) );
+		if (tol < 2) tol = 2;
+		if (Math.abs(sim-kids) <= tol)
 			return true;
 		return false;
 	}
@@ -216,7 +217,7 @@ public class GetCountHandler extends XMLHandler {
 	// Returns true if the calculated value is equal to the entered value.
 	// Note: tolerance is 1 to account for .5 approximation
 	private boolean compareMath(double calculated, double entered) {
-		if (Math.abs(calculated-(double)entered) < 1)
+		if (Math.abs(calculated-(double)entered) <= 1)
 			return true;
 		return false;
 	}

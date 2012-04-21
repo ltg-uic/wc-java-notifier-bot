@@ -19,7 +19,7 @@ public class CountHandler extends JsonHandler {
 		super(json);
 	}
 
-	
+
 	/* (non-Javadoc)
 	 * @see ltg.es.wallcology.notifier.handlers.JsonHandler#handle()
 	 */
@@ -35,37 +35,43 @@ public class CountHandler extends JsonHandler {
 		String p_f = 	json.getString("payload", "organism_counts", "predator", "final_count");
 		if (p_f.equals("")) p_f="0";
 		// Store data in the map
-		String reqId = rm.addRequest(new CountRequestData(
-				json.getString("origin"),
-				Integer.parseInt(json.getString("payload", "chosen_habitat")),   							//wall
-				Integer.parseInt(json.getString("payload", "light_level")),									//light
-				Integer.parseInt(json.getString("payload", "temperature")),									//temp
-				Integer.parseInt(json.getString("payload", "humidity")),									//humid
-				Integer.parseInt(json.getString("payload", "organism_counts", "scum", "count1")),			//s1
-				Integer.parseInt(json.getString("payload", "organism_counts", "mold", "count1" )),			//f1
-				Integer.parseInt(json.getString("payload", "organism_counts", "blue_bug", "count1")),		//bb1
-				Integer.parseInt(json.getString("payload", "organism_counts", "green_bug", "count1")),		//gb1
-				Integer.parseInt(pr1),																		//pr1
-				Integer.parseInt(json.getString("payload", "organism_counts", "blue_bug", "count2")),		//bb2
-				Integer.parseInt(json.getString("payload", "organism_counts", "green_bug", "count2")),		//gb2
-				Integer.parseInt(pr2),																		//pr2
-				Integer.parseInt(json.getString("payload", "organism_counts", "blue_bug", "average")),		//bb_avg
-				Integer.parseInt(json.getString("payload", "organism_counts", "green_bug", "average")),		//gb_avg
-				Integer.parseInt(pr_avg),																	//pred_avg
-				Integer.parseInt(json.getString("payload", "organism_counts", "scum", "final_count")),		//s_f
-				Integer.parseInt(json.getString("payload", "organism_counts", "mold", "final_count")),		//f_f
-				Integer.parseInt(json.getString("payload", "organism_counts", "blue_bug", "final_count")),	//bb_f
-				Integer.parseInt(json.getString("payload", "organism_counts", "green_bug", "final_count")),	//gb_f
-				Integer.parseInt(p_f),																		//pr_f
-				Integer.parseInt(json.getString("payload", "organism_counts", "scum", "multiplier")),		//s_mult
-				Integer.parseInt(json.getString("payload", "organism_counts", "mold", "multiplier" )),		//f_mult
-				Integer.parseInt(json.getString("payload", "organism_counts", "blue_bug", "multiplier")),	//bb_mult
-				Integer.parseInt(json.getString("payload", "organism_counts", "green_bug", "multiplier")),	//gb_mult
-				Integer.parseInt(json.getString("payload", "organism_counts", "predator", "multiplier"))	//pr_mult
-				));
-		// Send request to WallCology server
-		String message = "<getCount reqId=\""+ reqId +"\" wall=\""+ json.getString("payload", "chosen_habitat") +"\" />";
-		net.sendTo(ConfFile.getProperty("WALLCOLOGY_USERNAME"), message);
+		try {
+			String reqId = rm.addRequest(new CountRequestData(
+					json.getString("origin"),
+					Integer.parseInt(json.getString("payload", "chosen_habitat")),   							//wall
+					Integer.parseInt(json.getString("payload", "light_level")),									//light
+					Integer.parseInt(json.getString("payload", "temperature")),									//temp
+					Integer.parseInt(json.getString("payload", "humidity")),									//humid
+					Integer.parseInt(json.getString("payload", "organism_counts", "scum", "count1")),			//s1
+					Integer.parseInt(json.getString("payload", "organism_counts", "mold", "count1" )),			//f1
+					Integer.parseInt(json.getString("payload", "organism_counts", "blue_bug", "count1")),		//bb1
+					Integer.parseInt(json.getString("payload", "organism_counts", "green_bug", "count1")),		//gb1
+					Integer.parseInt(pr1),																		//pr1
+					Integer.parseInt(json.getString("payload", "organism_counts", "blue_bug", "count2")),		//bb2
+					Integer.parseInt(json.getString("payload", "organism_counts", "green_bug", "count2")),		//gb2
+					Integer.parseInt(pr2),																		//pr2
+					Double.parseDouble(json.getString("payload", "organism_counts", "blue_bug", "average")),		//bb_avg
+					Double.parseDouble(json.getString("payload", "organism_counts", "green_bug", "average")),		//gb_avg
+					Double.parseDouble(pr_avg),																	//pred_avg
+					Integer.parseInt(json.getString("payload", "organism_counts", "scum", "final_count")),		//s_f
+					Integer.parseInt(json.getString("payload", "organism_counts", "mold", "final_count")),		//f_f
+					Double.parseDouble(json.getString("payload", "organism_counts", "blue_bug", "final_count")),	//bb_f
+					Double.parseDouble(json.getString("payload", "organism_counts", "green_bug", "final_count")),	//gb_f
+					Double.parseDouble(p_f),																		//pr_f
+					Integer.parseInt(json.getString("payload", "organism_counts", "scum", "multiplier")),		//s_mult
+					Integer.parseInt(json.getString("payload", "organism_counts", "mold", "multiplier" )),		//f_mult
+					Integer.parseInt(json.getString("payload", "organism_counts", "blue_bug", "multiplier")),	//bb_mult
+					Integer.parseInt(json.getString("payload", "organism_counts", "green_bug", "multiplier")),	//gb_mult
+					Integer.parseInt(json.getString("payload", "organism_counts", "predator", "multiplier"))	//pr_mult
+					));
+			// Send request to WallCology server
+			String message = "<getCount reqId=\""+ reqId +"\" wall=\""+ json.getString("payload", "chosen_habitat") +"\" />";
+			net.sendTo(ConfFile.getProperty("WALLCOLOGY_USERNAME"), message);
+		} catch (NumberFormatException e) {
+			for(StackTraceElement el : e.getStackTrace())
+				if(el.getFileName().contains((this.getClass().getSimpleName())))
+						log.error("Error parsing count values entered by kids. Line: " + el.getLineNumber());
+		}
 	}
 
 }

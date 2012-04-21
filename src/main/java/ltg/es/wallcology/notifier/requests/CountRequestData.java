@@ -24,14 +24,14 @@ public class CountRequestData extends RequestData {
 	private int bb2;
 	private int gb2;
 	private int pr2;
-	private int bb_avg;
-	private int gb_avg;
-	private int pr_avg;
+	private double bb_avg;
+	private double gb_avg;
+	private double pr_avg;
 	private int s_f;
 	private int f_f;
-	private int bb_f;
-	private int gb_f;
-	private int pr_f;
+	private double bb_f;
+	private double gb_f;
+	private double pr_f;
 	private int s_mult;
 	private int f_mult;
 	private int bb_mult;
@@ -41,8 +41,8 @@ public class CountRequestData extends RequestData {
 	
 	public CountRequestData(String orig, int wall, int light, int temp, int humid, int s,
 			int f, int bb1, int gb1, int pr1, int bb2, int gb2, int pr2, 
-			int bb_avg, int gb_avg, int pr_avg,
-			int s_f, int f_f, int bb_f, int gb_f, int pr_f,
+			double bb_avg, double gb_avg, double pr_avg,
+			int s_f, int f_f, double bb_f, double gb_f, double pr_f,
 			int s_mult, int f_mult, int bb_mult, int gb_mult, int pr_mult) {
 		super();
 		this.origin = orig;
@@ -55,9 +55,9 @@ public class CountRequestData extends RequestData {
 		this.bb1 = bb1;
 		this.gb1 = gb1;
 		this.pr1 = pr1;
-		this.bb2 = bb1;
-		this.gb2 = gb1;
-		this.pr2 = pr1;
+		this.bb2 = bb2;
+		this.gb2 = gb2;
+		this.pr2 = pr2;
 		this.bb_avg = bb_avg;
 		this.gb_avg = gb_avg;
 		this.pr_avg = pr_avg;
@@ -139,17 +139,17 @@ public class CountRequestData extends RequestData {
 	}
 
 
-	public int getBb_avg() {
+	public double getBb_avg() {
 		return bb_avg;
 	}
 
 
-	public int getGb_avg() {
+	public double getGb_avg() {
 		return gb_avg;
 	}
 
 
-	public int getPr_avg() {
+	public double getPr_avg() {
 		return pr_avg;
 	}
 
@@ -164,17 +164,17 @@ public class CountRequestData extends RequestData {
 	}
 
 
-	public int getBb_f() {
+	public double getBb_f() {
 		return bb_f;
 	}
 
 
-	public int getGb_f() {
+	public double getGb_f() {
 		return gb_f;
 	}
 
 
-	public int getPr_f() {
+	public double getPr_f() {
 		return pr_f;
 	}
 
