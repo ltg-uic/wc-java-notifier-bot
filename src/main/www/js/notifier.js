@@ -235,11 +235,16 @@ function updateList(notifications) {
 function appendNewNotification(msg, where) {
     // 1. Append the notification... 
     if (where=="bottom") {
-        //at the end of the list
+        // 1.a ... at the end of the list
         $('#alert_list').append('<li id="' + msg._id.$oid + '"><a href="#alert_' + msg._id.$oid + '" >' + msg.title + '</a></li>');
     } else {
+        // 1.a ... at the beginning of the list 
         $('#alert_list').prepend('<li id="' + msg._id.$oid + '"><a href="#alert_' + msg._id.$oid + '" >' + msg.title + '</a></li>');
     }
+    // 1.b Attach an event to when people click on the notification
+    $('#' + msg._id.$oid).click(function(){
+        markNotificationAs(msg._id.$oid, "viewed")
+    });
     // 2. Create alerts detail page
     $('<div id="alert_' + msg._id.$oid + '" data-role="page"><div data-role="header">' + 
         '<h1>Details</h1><a href="#" data-rel="back" data-theme="a">Back</a></div>' + 
@@ -256,11 +261,11 @@ function appendNewNotification(msg, where) {
     $("#alert_" + msg._id.$oid).bind('pagebeforeshow', function() {
         // listener for no_deal
         $("#no_deal_" + msg._id.$oid).click(function(){
-            alert("No deal!")
+            markNotificationAs(msg._id.$oid, "discarded");
         });
         // listener for deal
         $("#deal_" + msg._id.$oid).click(function(){
-            alert("Deal!")
+            markNotificationAs(msg._id.$oid, "done");
         });
     });
 }
@@ -269,5 +274,23 @@ function appendNewNotification(msg, where) {
 function removeNotification(id) {
     $('#' + id).remove()            // Remove from list
     $("#alert_" + id).remove()      // Remove alerts details page 
+}
+
+
+function markNotificationAs(id, state) {
+    $.ajax({
+        type: "POST",
+        url: "/mongoose/wallcology/notifications/_update",
+        data: { 
+            criteria : '{"_id": {"$oid": "' + id + '"}}', 
+            newobj  : '{"$set":{"status":"' + state +'"}, "$push":{"history":{"' + state + '":"' + new Date().getTime() + '"}}}'
+        },
+        context: this,
+        success: function(data) {
+            if (data.ok != 1) {
+                console.log("Error updating notification state")
+            }
+        }
+    });
 }
 

@@ -53,7 +53,9 @@ public class GetCountHandler extends XMLHandler {
 			BasicDBObject n = new BasicDBObject();
 			n.put("title", cd.getOrigin() + " need help!");
 			n.put("status", "new");
-			n.put("history", new BasicDBObject("new", System.currentTimeMillis()));
+			List<BasicDBObject> history = new ArrayList<BasicDBObject>();
+			history.add(new BasicDBObject("new", String.valueOf(System.currentTimeMillis())));
+			n.put("history", history);
 			n.put("alerts", alerts);
 			db.saveNotification(n);
 		}
