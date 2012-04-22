@@ -250,13 +250,13 @@ function appendNewNotification(msg, where) {
         '<h1>Details</h1><a href="#" data-rel="back" data-theme="a">Back</a></div>' + 
         '<div id="alerts_list_' + msg._id.$oid + '" data-role="content"></div></div>').appendTo("body");
     // 2.a add discard button to the details page
-    $("<button id='no_deal_" + msg._id.$oid + "' class='no_deal'>I can't deal with this now!</button><br />").appendTo('#alerts_list_' + msg._id.$oid);
+    $("<a id='no_deal_" + msg._id.$oid + "' href='#notifications' data-role='button'>I can't deal with this now!</a><br />").appendTo('#alerts_list_' + msg._id.$oid);
     // 2.b append alerts to details page
     $.each(msg.alerts, function (i,a) {
         $('<div class=alert >' + a.text + '</div>').appendTo('#alerts_list_' + msg._id.$oid);
     });
     // 2.c add action button
-    $("{<br /><button id='deal_" + msg._id.$oid + "' class='deal'>I took action</button>").appendTo('#alerts_list_' + msg._id.$oid);
+    $("{<br /><a id='deal_" + msg._id.$oid + "' href='#notifications' data-role='button'>I took action</a>").appendTo('#alerts_list_' + msg._id.$oid);
     // 2.d add events when the users press buttons
     $("#alert_" + msg._id.$oid).bind('pagebeforeshow', function() {
         // listener for no_deal
