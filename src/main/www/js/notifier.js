@@ -58,11 +58,11 @@ $(document).ready(function () {
 
     $("#notifications").bind('pagebeforeshow', function() {
         getNotifications()
-        //notifications_poll = setInterval(getNotifications, 2000)
+        notifications_poll = setInterval(getNotifications, 2000)
     });
 
     $("#notifications").bind('pagebeforehide', function() {
-        //clearInterval(notifications_poll)
+        clearInterval(notifications_poll)
     });
 
 });
@@ -179,10 +179,19 @@ function getNotifications() {
         success: function(data) {
             if (data.ok === 1) {
                 // Process notifications
-                if( $('#alert_list li').length == 0)
-                    createList(data.results);
-                else 
+                if( $('#alert_list li').length == 0) {
+                    // No notifications are displayed
+                    createList(data.results)
+                    $('#alert_list').listview('refresh')
+                } else if (data.results.length == 0) {
+                    // Delete all displayed notificaitons
+                    deleteList(data.results)
+                    $('#alert_list').listview('refresh')
+                } else{
+                    // Add some, delete some
                     updateList(data.results);
+                    $('#alert_list').listview('refresh');
+                }
             } else {
                 console.log("Error fetching notifications")
             }
@@ -193,19 +202,44 @@ function getNotifications() {
 
 function createList(notifications) {
     $.each(notifications, function(i, notif) {
-        appendNewNotification(notif);
+        appendNewNotification(notif, "bottom")
+    });
+}
+
+function deleteList(notifications) {
+    $('#alert_list li').each(function(index) {
+        removeNotification($(this).attr("id"))
     });
 }
 
 function updateList(notifications) {
-
+    // Find new notifications... 
+    var i=0
+    while ( notifications[i]._id.$oid != $('#alert_list li').first().attr("id") ){
+        i++;
+    }
+    // ...and insert them in reverse order
+    while (i>0) {
+        appendNewNotification(notifications[i-1], "top")
+        i--
+    }
+    // Find old notifications and remove them
+    var j= $('#alert_list li').length - 1
+    while( $('#alert_list li').eq(j).attr("id") != notifications[notifications.length-1]._id.$oid ) {
+        removeNotification($('#alert_list li').eq(j).attr("id"))
+        j--
+    }
 }
 
 
-function appendNewNotification(msg) {
-    // 1. Append at the end of the list
-    $('#alert_list').append('<li id="' + msg._id.$oid + '"><a href="#alert_' + msg._id.$oid + '" >' + msg.title + '</a></li>');
-    $('#alert_list').listview('refresh');
+function appendNewNotification(msg, where) {
+    // 1. Append the notification... 
+    if (where=="bottom") {
+        //at the end of the list
+        $('#alert_list').append('<li id="' + msg._id.$oid + '"><a href="#alert_' + msg._id.$oid + '" >' + msg.title + '</a></li>');
+    } else {
+        $('#alert_list').prepend('<li id="' + msg._id.$oid + '"><a href="#alert_' + msg._id.$oid + '" >' + msg.title + '</a></li>');
+    }
     // 2. Create alerts detail page
     $('<div id="alert_' + msg._id.$oid + '" data-role="page"><div data-role="header">' + 
         '<h1>Details</h1><a href="#" data-rel="back" data-theme="a">Back</a></div>' + 
@@ -229,6 +263,11 @@ function appendNewNotification(msg) {
             alert("Deal!")
         });
     });
+}
 
+
+function removeNotification(id) {
+    $('#' + id).remove()            // Remove from list
+    $("#alert_" + id).remove()      // Remove alerts details page 
 }
 
